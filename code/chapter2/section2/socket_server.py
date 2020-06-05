@@ -19,6 +19,7 @@ def handle_connection(conn, addr):
     import time
     time.sleep(10)
     request = b""
+
     while EOL1 not in request and EOL2 not in request:
         request += conn.recv(1024)
     print(request)
