@@ -9,6 +9,7 @@ from app import simple_app
 def wsgi_to_bytes(s: str):
     return s.encode()
 
+
 def run_with_cgi(application):
     environ = dict(os.environ.items())
     environ['wsgi.input'] = sys.stdin.buffer
