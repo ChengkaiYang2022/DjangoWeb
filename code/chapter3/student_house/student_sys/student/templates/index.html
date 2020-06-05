@@ -5,6 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-    Hello {{words}} !
+    <ul>
+        {% for student in students %}
+            <li>{{ student.name }} - {{ student.get_status_display }}</li>
+        {% endfor %}}
+    </ul>
 </body>
 </html>
