@@ -23,14 +23,18 @@ class Student(models.Model):
     qq = models.CharField(max_length=128, verbose_name="QQ")
     phone = models.CharField(max_length=128, verbose_name="电话")
     status = models.IntegerField(choices=STATUS_ITEMS, default=0, verbose_name="审核状态")
-    created_time = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="创建事件")
-
-    @classmethod
-    def get_all(cls):
-        return cls.objects.all()
-    def __str__(self):
-        return '<Student: {}>'.format(self.name)
+    created_time = models.DateTimeField(auto_now_add=True, editable=False, verbose_name="创建时间")
 
     class Meta:
         verbose_name = verbose_name_plural = "学员信息"
 
+    def __str__(self):
+        return '<Student: {}>'.format(self.name)
+
+    @property
+    def sex_show(self):
+        return dict(self.SEX_ITEMS)[self.sex]
+
+    @classmethod
+    def get_all(cls):
+        return cls.objects.all()
