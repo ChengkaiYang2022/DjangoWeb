@@ -11,6 +11,7 @@ from student.models import Student
 
 class IndexView(View):
     template_name = 'index.html'
+
     def get_context(self):
         students = Student.get_all()
         context = {
@@ -37,6 +38,8 @@ class IndexView(View):
         })
 
         return render(request, self.template_name, context=context)
+
+
 def index(request):
     students = Student.get_all()
     if request.method == 'POST':
