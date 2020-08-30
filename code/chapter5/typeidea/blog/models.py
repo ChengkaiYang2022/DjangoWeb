@@ -52,6 +52,9 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
+    def __str__(self):
+        return self.title
+
     STATUS_NORMAL = 1
     STATUS_DELETE = 0
     STATUS_DRAFT = 2
