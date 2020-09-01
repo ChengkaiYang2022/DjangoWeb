@@ -13,6 +13,7 @@ from blog.models import Category, Tag, Post
 #     fields = ('title', 'desc')
 #     extra = 1
 #     model = Post
+from typeidea.custom_site import custom_site
 
 
 @admin.register(Category)
@@ -51,7 +52,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
         return queryset
 
 
-@admin.register(Post)
+@admin.register(Post, site=custom_site)
 class PostAdmin(admin.ModelAdmin):
     form = PostAdminForm
     list_display = [
@@ -101,7 +102,7 @@ class PostAdmin(admin.ModelAdmin):
     def operator(self, obj):
         return format_html(
             '<a href="{}">编辑</a>',
-            reverse('admin:blog_post_change', args=(obj.id,) )
+            reverse('cus_admin:blog_post_change', args=(obj.id,) )
         )
     operator.short_description = '操作'
 
