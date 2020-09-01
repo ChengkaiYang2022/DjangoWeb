@@ -1,6 +1,5 @@
 /.idea/
-/code/chapter3/student_house/student_sys/student/migrations/
 /code/chapter3/student_house/student_sys/db.sqlite3
-/code/chapter5/typeidea-env/
-/code/chapter5/typeidea/db.sqlite3
-/code/chapter5/typeidea/typeidea/db.sqlite3
+/pythoncode/chapter5/typeidea-env/
+#/code/chapter5/typeidea/db.sqlite3
+#/code/chapter5/typeidea/typeidea/db.sqlite3
