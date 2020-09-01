@@ -8,12 +8,18 @@ from django.utils.html import format_html
 from blog.adminforms import PostAdminForm
 from blog.models import Category, Tag, Post
 
+#
+# class PostInline(admin.TabularInline):
+#     fields = ('title', 'desc')
+#     extra = 1
+#     model = Post
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'status', 'is_nav', 'created_time')
     fields = ('name', 'is_nav', 'status')
-
+    # inlines = [PostInline, ]
     def save_model(self, request, obj, form, change):
         obj.owner = request.user
         return super(CategoryAdmin, self).save_model(request, obj, form, change)
