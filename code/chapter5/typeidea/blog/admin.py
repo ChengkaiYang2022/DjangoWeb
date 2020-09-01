@@ -88,6 +88,8 @@ class PostAdmin(admin.ModelAdmin):
         })
     )
 
+    filter_horizontal = ('tag', )
+
     def operator(self, obj):
         return format_html(
             '<a href="{}">编辑</a>',
