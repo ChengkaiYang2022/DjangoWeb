@@ -56,12 +56,12 @@ class Post(models.Model):
     @staticmethod
     def get_by_tag(tag_id):
         try:
-            tag = Tag.objects.get(tag_id)
+            tag = Tag.objects.get(id=tag_id)
         except Tag.DoesNotExist:
             tag = None
             post_list = []
         else:
-            post_list = tag.post_set.filter(status=Post.STATUS_NORMAL).select_related('owner', 'tag')
+            post_list = tag.post_set.filter(status=Post.STATUS_NORMAL).select_related('owner', 'category')
 
         return post_list, tag
 
@@ -77,7 +77,7 @@ class Post(models.Model):
 
         return post_list, category
 
-    @staticmethod
+    @classmethod
     def latest_posts(cls):
         queryset = cls.objects.filter(status=cls.STATUS_NORMAL)
         return queryset
