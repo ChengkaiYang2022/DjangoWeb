@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from blog.models import Tag, Post, Category
+from config.models import SideBar
 
 
 def post_list(request, category_id=None, tag_id=None):
@@ -19,6 +20,7 @@ def post_list(request, category_id=None, tag_id=None):
 
     context = {
         'category': category,
+        'sidebars': SideBar.get_all(),
         'tag': tag,
         'p_list': p_list,
     }
@@ -33,7 +35,8 @@ def post_detail(request, post_id=None):
         post = None
 
     context = {
-        'post': post
+        'post': post,
+        'sidebars': SideBar.get_all(),
     }
     context.update(Category.get_navs())
     return render(request, 'blog/detail.html', context=context)
