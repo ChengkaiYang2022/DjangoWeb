@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <div>
-        顶部分类：
-        {% for cate in navs %}
-        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
-        {% endfor %}
-    </div>
+{% extends "./base.html" %}
+{% block title %} {{ post.title }} {% endblock %}
 
+{% block main %}
     {% if post %}
         <h1>{{ post.title }}</h1>
         <div>
@@ -19,20 +9,8 @@
             <span>作者:{{ post.owner.username }}</span>
         </div>
         <hr/>
-
         <p>
             {{ post.content }}
         </p>
     {% endif %}
-    <hr>
-    <div>
-        底部分类：
-        {% for cate in navs %}
-        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
-        {% endfor %}
-    </div>
-    <div>
-        <a href="/">返回首页</a>
-    </div>
-</body>
-</html>
+{% endblock %}
