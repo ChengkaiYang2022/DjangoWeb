@@ -5,6 +5,13 @@
     <title>Title</title>
 </head>
 <body>
+    <div>
+        顶部分类：
+        {% for cate in navs %}
+        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
+        {% endfor %}
+    </div>
+
     {% if post %}
         <h1>{{ post.title }}</h1>
         <div>
@@ -17,5 +24,15 @@
             {{ post.content }}
         </p>
     {% endif %}
+    <hr>
+    <div>
+        底部分类：
+        {% for cate in navs %}
+        <a href="/category/{{ cate.id }}/">{{ cate.name }}</a>
+        {% endfor %}
+    </div>
+    <div>
+        <a href="/">返回首页</a>
+    </div>
 </body>
 </html>

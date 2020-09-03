@@ -22,7 +22,7 @@ def post_list(request, category_id=None, tag_id=None):
         'tag': tag,
         'p_list': p_list,
     }
-
+    context.update(Category.get_navs())
     return render(request, 'blog/list.html', context=context)
 
 
@@ -32,5 +32,9 @@ def post_detail(request, post_id=None):
     except Post.DoesNotExist:
         post = None
 
-    return render(request, 'blog/detail.html', context={'post': post})
+    context = {
+        'post': post
+    }
+    context.update(Category.get_navs())
+    return render(request, 'blog/detail.html', context=context)
 
