@@ -23,7 +23,7 @@ def post_list(request, category_id=None, tag_id=None):
         if category_id:
             p_list = p_list.filter(category_id=category_id)
 
-    return render(request, 'blog/list.html', context={'post': p_list})
+    return render(request, 'blog/list.html', context={'p_list': p_list})
 
 
 def post_detail(request, post_id=None):

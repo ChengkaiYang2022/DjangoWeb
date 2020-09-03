@@ -5,7 +5,19 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>list</h1>
-    <h1>{{ name }}</h1>
+<!--    <h1>list</h1>-->
+<!--    <h1>{{ name }}</h1>-->
+    <ul>
+        {% for p in p_list %}
+        <li>
+            <a href="/post/{{p.id}}.html">{{p.title}}</a>
+            <div>
+                <span>作者:{{ p.owner.username }}</span>
+                <span>分类:{{ p.category.name }}</span>
+            </div>
+            <p>{{ p.desc }}</p>
+        </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
