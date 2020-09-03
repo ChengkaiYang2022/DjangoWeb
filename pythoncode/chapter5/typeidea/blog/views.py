@@ -3,14 +3,13 @@ from django.http import HttpResponse
 # Create your views here.
 from django.shortcuts import render
 
-from blog.models import Tag, Post
+from blog.models import Tag, Post, Category
 
 
 def post_list(request, category_id=None, tag_id=None):
-    content = 'post_list category_id={category_id}, tag_id={tag_id}'.format(
-        category_id=category_id,
-        tag_id=tag_id,
-    )
+    tag = None
+    category = None
+
     if tag_id:
         try:
             tag = Tag.objects.get(id=tag_id)
@@ -21,9 +20,20 @@ def post_list(request, category_id=None, tag_id=None):
     else:
         p_list = Post.objects.filter(status=Post.STATUS_NORMAL)
         if category_id:
-            p_list = p_list.filter(category_id=category_id)
+            try:
+                category = Category.objects.get(id=category_id)
+            except Category.DoesNotExist:
+                category = None
+            else:
+                p_list = p_list.filter(category_id=category_id)
 
-    return render(request, 'blog/list.html', context={'p_list': p_list})
+    context = {
+        'category': category,
+        'tag': tag,
+        'p_list': p_list,
+    }
+
+    return render(request, 'blog/list.html', context=context)
 
 
 def post_detail(request, post_id=None):
