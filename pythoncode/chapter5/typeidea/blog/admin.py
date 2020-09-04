@@ -1,28 +1,29 @@
-from django.contrib import admin
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-# Register your models here.
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry
 from django.urls import reverse
 from django.utils.html import format_html
 
-from blog.adminforms import PostAdminForm
-from blog.models import Category, Tag, Post
 
-#
-# class PostInline(admin.TabularInline):
-#     fields = ('title', 'desc')
-#     extra = 1
-#     model = Post
-from typeidea.base_admin import BaseOwnerAdmin
+from .adminforms import PostAdminForm
+from .models import Post, Category, Tag
 from typeidea.custom_site import custom_site
+from typeidea.base_admin import BaseOwnerAdmin
+
+
+class PostInline(admin.TabularInline):  # StackedInline  样式不同
+    fields = ('title', 'desc')
+    extra = 1  # 控制额外多几个
+    model = Post
 
 
 @admin.register(Category, site=custom_site)
 class CategoryAdmin(BaseOwnerAdmin):
-    list_display = ('name', 'status', 'is_nav', 'created_time')
-    fields = ('name', 'is_nav', 'status')
-    # inlines = [PostInline, ]
+    inlines = [PostInline, ]
+    list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count')
+    fields = ('name', 'status', 'is_nav')
 
     def post_count(self, obj):
         return obj.post_set.count()
@@ -37,7 +38,7 @@ class TagAdmin(BaseOwnerAdmin):
 
 
 class CategoryOwnerFilter(admin.SimpleListFilter):
-    """ 自定义过滤器只展示当前用户分类"""
+    """ 自定义过滤器只展示当前用户分类 """
 
     title = '分类过滤器'
     parameter_name = 'owner_category'
@@ -61,25 +62,29 @@ class PostAdmin(BaseOwnerAdmin):
     ]
     list_display_links = []
 
-    list_filter = [CategoryOwnerFilter]
+    list_filter = [CategoryOwnerFilter, ]
     search_fields = ['title', 'category__name']
+    save_on_top = True
 
     actions_on_top = True
     actions_on_bottom = True
 
+    # 编辑页面
     save_on_top = True
-    #
-    # fields = (
-    #     ('category', 'title'),
-    #     'desc',
-    #     'status',
-    #     'content',
-    #     'tag',
-    # )
+
+    exclude = ['owner']
+    """
+    fields = (
+        ('category', 'title'),
+        'desc',
+        'status',
+        'content',
+        'tag',
+    )
+    """
     fieldsets = (
         ('基础配置', {
-            # 'classes': ('wide', ),
-            # 'description': '基础配置描述',
+            'description': '基础配置描述',
             'fields': (
                 ('title', 'category'),
                 'status',
@@ -92,17 +97,17 @@ class PostAdmin(BaseOwnerAdmin):
             ),
         }),
         ('额外信息', {
-            'classes': ('collapse', ),
+            'classes': ('wide',),
             'fields': ('tag', ),
         })
     )
-
-    filter_horizontal = ('tag', )
+    # filter_horizontal = ('tag', )
+    filter_vertical = ('tag', )
 
     def operator(self, obj):
         return format_html(
             '<a href="{}">编辑</a>',
-            reverse('cus_admin:blog_post_change', args=(obj.id, ))
+            reverse('cus_admin:blog_post_change', args=(obj.id,))
         )
     operator.short_description = '操作'
 
@@ -117,8 +122,4 @@ class PostAdmin(BaseOwnerAdmin):
 
 @admin.register(LogEntry, site=custom_site)
 class LogEntryAdmin(admin.ModelAdmin):
-    list_display = ('object_id', 'object_repr', 'action_flag', 'user', 'change_message')
-
-    def get_queryset(self, request):
-        qs = super(LogEntryAdmin, self).get_queryset(request)
-        return qs.filter(action_flag=2)
+    list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message']
