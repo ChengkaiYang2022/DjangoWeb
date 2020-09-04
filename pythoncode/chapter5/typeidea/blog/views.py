@@ -2,7 +2,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from blog.models import Tag, Post, Category
 from config.models import SideBar
@@ -46,3 +46,10 @@ def post_list(request, category_id=None, tag_id=None):
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/detail.html'
+
+
+class PostListView(ListView):
+    queryset = Post.latest_posts()
+    paginate_by = 1
+    context_object_name = 'post_list'
+    template_name = 'blog/list.html'
